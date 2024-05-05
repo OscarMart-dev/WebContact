@@ -108,6 +108,9 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="Buttons\agregar-usuario.png" />
+    <Content Include="Buttons\agregar.png" />
+    <Content Include="Buttons\delete.png" />
+    <Content Include="Buttons\edit.png" />
     <Content Include="Buttons\editar.png" />
     <Content Include="Buttons\eliminar.png" />
     <Content Include="Buttons\usuario.png" />

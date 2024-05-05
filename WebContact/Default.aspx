@@ -40,22 +40,21 @@
                         </script>
                         
                     <br />
-                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/eliminar.png"></asp:ImageButton>
-                    <asp:ImageButton runat="server" ID="pictureEdit"  Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/editar.png" ViewStateMode="Enabled"></asp:ImageButton>
+                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/delete.png" class="ImageButton"></asp:ImageButton>
+                    <asp:ImageButton runat="server" ID="pictureEdit"  Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton"></asp:ImageButton>
                     <br />
                     <asp:Image runat="server"></asp:Image>
                     <br />
                     <fieldset class="groupBox">
                         <legend>Nombre</legend>
 
-                        <asp:TextBox ID="TextBoxName" runat="server"></asp:TextBox>
-                        <asp:RequiredFieldValidator ID="rfvInput" runat="server" ControlToValidate="TextBoxName" ErrorMessage="Este campo es obligatorio" Text="*" />
+                        <asp:TextBox ID="TextBoxName" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ClientIDMode="Static"></asp:TextBox>                        
                     </fieldset>
                      <fieldset class="groupBox">
 
                         <legend>Móvil</legend>
 
-                        <asp:TextBox ID="txtboxPhone" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtboxPhone" runat="server"  pattern="[0-9]*" CssClass="TextBox"></asp:TextBox>
 
                     </fieldset>
 
@@ -63,7 +62,7 @@
 
                         <legend>N° Identificación</legend>
 
-                        <asp:TextBox ID="txtboxId" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox"></asp:TextBox>
 
                     </fieldset>
 
@@ -71,18 +70,21 @@
 
                         <legend>Móvil Empresarial</legend>
 
-                        <asp:TextBox ID="txtboxOfficePhone" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtboxOfficePhone" runat="server" pattern="[0-9]*" CssClass="TextBox"></asp:TextBox>
 
                     </fieldset>
                     <fieldset class="groupBox">
 
                         <legend>Cargo</legend>
 
-                        <asp:TextBox ID="txtboxPost" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="txtboxPost" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox"></asp:TextBox>
 
-                    </fieldset>
-                    <br />
+                    </fieldset> 
+                    
+                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float=right;></asp:ImageButton>
                     <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" OnClientClick="mostrarMensaje();" OnClick="btnGuardar_Click" BackColor="#0099FF" BorderStyle="None"></asp:Button>
+
+                    
                     
                 </div>
 

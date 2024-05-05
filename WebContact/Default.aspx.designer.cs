@@ -60,15 +60,6 @@ namespace WebContact
         protected global::System.Web.UI.WebControls.TextBox TextBoxName;
 
         /// <summary>
-        /// Control rfvInput.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.RequiredFieldValidator rfvInput;
-
-        /// <summary>
         /// Control txtboxPhone.
         /// </summary>
         /// <remarks>
@@ -103,6 +94,15 @@ namespace WebContact
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtboxPost;
+
+        /// <summary>
+        /// Control agregar.
+        /// </summary>
+        /// <remarks>
+        /// Campo generado automáticamente.
+        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ImageButton agregar;
 
         /// <summary>
         /// Control btnGuardar.

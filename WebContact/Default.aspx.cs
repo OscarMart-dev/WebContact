@@ -136,7 +136,13 @@ namespace WebContact
                 txtboxPhone.Text = get.phone;
                 txtboxOfficePhone.Text = get.office_phone;
                 txtboxPost.Text = get.post;
-                imagen.Src = "data:image/jpeg;base64," + get.base64String;
+                if (get.base64String != null)
+                {
+                    imagen.Src = "data:image/jpeg;base64," + get.base64String;
+                }
+                else {
+                    imagen.Src = "Buttons/edit.png";///hay que cambiar esta imagen
+                }
             }
         }
 
@@ -158,6 +164,8 @@ namespace WebContact
             dropdownNombres.Items.Insert(0, new ListItem(" ", "0"));
         }
 
-        
+       
+
+
     }
 }

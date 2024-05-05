@@ -1,5 +1,7 @@
 ﻿body {
-    .groupBox{
+    .groupBox
+
+{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -34,6 +36,7 @@
 img:hover {
     cursor: pointer;
 }
+
 html, body {
     height: 50%;
 }
@@ -49,7 +52,7 @@ html, body {
 .inputfile + label {
     font-size: 10px;
     color: white;
-    background-color: #307eb3;
+    background-color: #2196f3;
     text-align: center;
     display: inline-grid;
     padding: 10px;
@@ -61,11 +64,10 @@ html, body {
 .inputfile {
     width: 0px;
     height: 0px;
-    
 }
 
     .inputfile:hover {
-        background-color: #307eb3;
+        background-color: #2196f3;
     }
 
 .imagen {
@@ -77,9 +79,41 @@ html, body {
     height: 150px;
     border-radius: 35px;
 }
+
     .imagen:hover {
-    transform:scale(1.1);
-    transition:1s ease-in-out;
-    
+        transform: scale(1.1);
+        transition: 1s ease-in-out;
     }
+
+.boton {
+    width: 50px;
+    transition: ease 1s;
+    float: right;
+}
+
+    .boton:hover {
+        transform: scale(1.1);
+        transition: 1s ease-in-out;
+    }
+
+.ImageButton:hover {
+    transform: scale(1.1);
+    transition: 1s ease-in-out;
+}
+
+.TextBox {
+    padding: 5px;
+    border-radius: 5px;
+    outline: none;
+}
+.TextBox:invalid {
+    border: 2px solid tomato;
+    animation: 0.2s valid 3;
+}
+
+@keyframes valid {
+    to { transform: translateX(0); }
+    from { transform: translateX(10px); }
+}
+
 }

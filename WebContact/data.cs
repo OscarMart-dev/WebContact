@@ -80,7 +80,7 @@ namespace WebContact
                 }
                 else
                 {
-                    this.image = null;
+                    this.base64String = null;
                 }
                 this.id = reader["reqc_id"].ToString();
                 this.post = reader["reqn_post"].ToString();
