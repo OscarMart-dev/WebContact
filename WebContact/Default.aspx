@@ -7,6 +7,7 @@
     <main>
         <center>
          <div class="card" style="width: 20rem;">
+             <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
     
                 <div class="card-body" id="cardForm">
                     <asp:ScriptManager runat="server"></asp:ScriptManager>
@@ -14,28 +15,30 @@
                     
                    <asp:DropDownList ID="dropdownNombres" runat="server" CssClass="form-control" SelectedIndexChanged="dropdownNombres_SelectedIndexChanged" AutoPostBack="True" OnSelectedIndexChanged="dropdownNombres_SelectedIndexChanged1"></asp:DropDownList>
                     
-                    <br />
-                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureCreate" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/agregar-usuario.png" OnClick="pictureCreate_Click"></asp:ImageButton>
-                    
+                        <div class="upload">
+                             <center><img class="imagen" id="imagen" runat="server">
+                            <br />
+                                 <br />
+                    <input type="file" name="file" id="file" accept="image/*" class="inputfile" onchange="cargarImagen(event)">
+                    <label for="file">
+                        <i class ="fa-solid fa-image"></i>
+                        selecciona una imagen
+                    </label>
+                    </center>
+                            </div>
 
-                    <script>
-                        function mostrarSelector() {
-                            document.getElementById('fileInput').click();
-                        }
+                        <script>    
+                            function cargarImagen(event) {
+                                let reader = new FileReader();
 
-                        function cargarImagen(event) {
-                            var file = event.target.files[0];
-                            var reader = new FileReader();
-                            reader.onload = function (e) {
-                                document.getElementById('imagen').src = e.target.result;
-                            };
-                            reader.readAsDataURL(file);
-                        }
-                    </script>
-
-                    <input type="file" id="fileInput" style="display: none;" onchange="cargarImagen(event)" accept="image/jpeg, image/png, image/jpg"/>
-
-                    <asp:Image ID="imgPhoto" runat="server" Width="100px" Height="100px" ImageAlign="Middle"  BorderStyle="Solid" CssClass="imagen-redondeada" ImageUrl="~/Buttons/usuario.png" onclick="mostrarSelector()" cursor="pointer"/>
+                                reader.onload = function() {
+                                    let imgPhoto = document.querySelector('.imagen');
+                                    imgPhoto.src = reader.result;
+                                }
+                                reader.readAsDataURL(event.target.files[0]);
+                            }
+                        </script>
+                        
                     <br />
                     <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/eliminar.png"></asp:ImageButton>
                     <asp:ImageButton runat="server" ID="pictureEdit"  Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/editar.png" ViewStateMode="Enabled"></asp:ImageButton>
@@ -86,7 +89,6 @@
                 <div class="card-body"></div></div>
                     </center>
 
-    
     </main>
 
 </asp:Content>

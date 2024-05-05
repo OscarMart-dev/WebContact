@@ -13,6 +13,8 @@ namespace WebContact
         public string name { get; set; }
         public string phone { get; set; }
         public byte[] image { get; set; }
+
+        public string base64String { get; set; }
         public string id { get; set; }
 
         public string post { get; set; }
@@ -73,7 +75,8 @@ namespace WebContact
                 this.phone = reader["reqc_cell_phone"].ToString();
                 if (!Convert.IsDBNull(reader["reqn_picture"]))
                 {
-                    this.image = (byte[])reader["reqn_picture"];
+                    byte[] imagenBytes = (byte[])reader["reqn_picture"];
+                    this.base64String = Convert.ToBase64String(imagenBytes);
                 }
                 else
                 {

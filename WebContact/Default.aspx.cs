@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
+
 
 namespace WebContact
 {
@@ -61,21 +63,6 @@ namespace WebContact
         }
 
 
-
-        protected void btnGenerar_Click(object sender, EventArgs e)
-        {
-            string id = "1024503182";
-            data get = new data();
-            get.getSelected(id);
-            txtboxId.Text = get.id;
-            TextBoxName.Text = get.name;
-            txtboxPhone.Text = get.phone;
-            txtboxOfficePhone.Text = get.office_phone;
-            txtboxPost.Text = get.post;
-        }
-
-
-
         protected void pictureEdit_Click(object sender, ImageClickEventArgs e)
         {
 
@@ -110,14 +97,7 @@ namespace WebContact
             pictureDelete.Visible = false;
         }
 
-        private Bitmap ByteArrayToImage(byte[] imagenBytes)
-        {
-            if (imagenBytes == null) return null;
-            using (MemoryStream ms = new MemoryStream(imagenBytes))
-            {
-                return new Bitmap(ms);
-            }
-        }
+       
 
         private byte[] ImageToByteArray(System.Drawing.Image image)
         {
@@ -137,6 +117,7 @@ namespace WebContact
             }
         }
 
+        public byte[] image { get; set; }
 
         protected void dropdownNombres_SelectedIndexChanged1(object sender, EventArgs e)
         {
@@ -149,13 +130,13 @@ namespace WebContact
             // Se compara si viene vacio no haga nada de lo contrario que muestre la info
             if (nombreSeleccionado != null)
             {
-                // Asignar los valores del registro a los controles del formulario
+                // Asignar los valores del registro a los controles del formulario se debe poner base 64 para mostrarla
                 TextBoxName.Text = get.name;
                 txtboxId.Text = get.id;
                 txtboxPhone.Text = get.phone;
                 txtboxOfficePhone.Text = get.office_phone;
                 txtboxPost.Text = get.post;
-                System.Drawing.Image imgPhoto = ByteArrayToImage(get.image);
+                imagen.Src = "data:image/jpeg;base64," + get.base64String;
             }
         }
 
@@ -176,5 +157,7 @@ namespace WebContact
             }
             dropdownNombres.Items.Insert(0, new ListItem(" ", "0"));
         }
+
+        
     }
 }

@@ -1,7 +1,5 @@
 ﻿body {
-    .groupBox
-
-{
+    .groupBox{
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -36,5 +34,52 @@
 img:hover {
     cursor: pointer;
 }
+html, body {
+    height: 50%;
+}
 
+.upload {
+    display: grid;
+    align-items: center;
+    justify-content: center;
+    height: 50%;
+    padding-top: 10%;
+}
+
+.inputfile + label {
+    font-size: 10px;
+    color: white;
+    background-color: #307eb3;
+    text-align: center;
+    display: inline-grid;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.inputfile {
+    width: 0px;
+    height: 0px;
+    
+}
+
+    .inputfile:hover {
+        background-color: #307eb3;
+    }
+
+.imagen {
+    margin-top: 10%;
+    border: 1px solid;
+    border-style: dashed;
+    align-items: center;
+    width: 150px;
+    height: 150px;
+    border-radius: 35px;
+}
+    .imagen:hover {
+    transform:scale(1.1);
+    transition:1s ease-in-out;
+    
+    }
 }
