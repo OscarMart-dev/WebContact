@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -15,8 +17,7 @@ namespace WebContact
         {
             if (!IsPostBack)
             {
-                InicializarDropDownNombres();
-
+                LlenarDropDownList();
 
             }
         }
@@ -28,8 +29,10 @@ namespace WebContact
             contactos.Insert(0, " ");
             dropdownNombres.DataSource = contactos;
             dropdownNombres.DataBind();
-            
+
         }
+
+
 
         public static List<string> GetCompletionList(string prefixText)
         {
@@ -107,18 +110,43 @@ namespace WebContact
             pictureDelete.Visible = false;
         }
 
-        
-        
+        private Bitmap ByteArrayToImage(byte[] imagenBytes)
+        {
+            if (imagenBytes == null) return null;
+            using (MemoryStream ms = new MemoryStream(imagenBytes))
+            {
+                return new Bitmap(ms);
+            }
+        }
+
+        private byte[] ImageToByteArray(System.Drawing.Image image)
+        {
+            try
+            {
+                if (image == null) return null;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    image.Save(ms, System.Drawing.Imaging.ImageFormat.Png);
+                    return ms.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al convertir la imagen a arreglo de bytes: {ex.Message}");
+                return null;
+            }
+        }
+
 
         protected void dropdownNombres_SelectedIndexChanged1(object sender, EventArgs e)
         {
             string nombreSeleccionado = dropdownNombres.SelectedValue;
 
-            // Llamar a un método para obtener la información del registro seleccionado desde la base de datos
+            // Llamar a un método para obtener la información del registro en base de datos
             data get = new data();
             get.getSelected(nombreSeleccionado);
 
-            // Mostrar la información del registro en el formulario
+            // Se compara si viene vacio no haga nada de lo contrario que muestre la info
             if (nombreSeleccionado != null)
             {
                 // Asignar los valores del registro a los controles del formulario
@@ -127,8 +155,26 @@ namespace WebContact
                 txtboxPhone.Text = get.phone;
                 txtboxOfficePhone.Text = get.office_phone;
                 txtboxPost.Text = get.post;
-                // Otros campos del formulario según los datos que quieras mostrar
+                System.Drawing.Image imgPhoto = ByteArrayToImage(get.image);
             }
+        }
+
+        private void LlenarDropDownList()
+        {
+            string connectionString = ConfigurationManager.ConnectionStrings["DataBaseConnectionString"].ConnectionString;
+            MySqlConnection conn = new MySqlConnection(connectionString);
+
+            string query = "select reqc_id,reqn_name from req_phonebook";
+            using (MySqlCommand cmd = new MySqlCommand(query, conn))
+            {
+                conn.Open();
+                MySqlDataReader reader = cmd.ExecuteReader();
+                dropdownNombres.DataSource = reader;
+                dropdownNombres.DataTextField = "reqn_name"; // El campo que se mostrará en el dropdown
+                dropdownNombres.DataValueField = "reqc_id"; // El valor que corresponde a cada texto
+                dropdownNombres.DataBind();
+            }
+            dropdownNombres.Items.Insert(0, new ListItem(" ", "0"));
         }
     }
 }

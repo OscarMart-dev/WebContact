@@ -62,7 +62,7 @@ namespace WebContact
         {
             MySqlConnection conn = new MySqlConnection(CONN_PARAMS);
             conn.Open();
-            string sql = "SELECT * FROM req_phonebook where reqn_name ='" + id+ "' order by reqn_name asc";
+            string sql = "SELECT * FROM req_phonebook where reqc_id =" + id+ " order by reqn_name asc";
             MySqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = sql;
             MySqlDataReader reader = cmd.ExecuteReader();

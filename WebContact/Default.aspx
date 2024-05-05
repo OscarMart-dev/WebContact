@@ -13,10 +13,29 @@
                     <br />
                     
                    <asp:DropDownList ID="dropdownNombres" runat="server" CssClass="form-control" SelectedIndexChanged="dropdownNombres_SelectedIndexChanged" AutoPostBack="True" OnSelectedIndexChanged="dropdownNombres_SelectedIndexChanged1"></asp:DropDownList>
-                    <asp:Button runat="server" Text="Generar" ID="btnGenerar" OnClick="btnGenerar_Click"></asp:Button>
+                    
                     <br />
-                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureCreate" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/crear.png" OnClick="pictureCreate_Click"></asp:ImageButton>
-                    <asp:Image ID="imgPhoto" runat="server" Width="100px" Height="100px" ImageAlign="Middle" ImageUrl="~/Buttons/usuario.png" BorderStyle="Solid" CssClass="imagen-redondeada" />
+                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureCreate" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/agregar-usuario.png" OnClick="pictureCreate_Click"></asp:ImageButton>
+                    
+
+                    <script>
+                        function mostrarSelector() {
+                            document.getElementById('fileInput').click();
+                        }
+
+                        function cargarImagen(event) {
+                            var file = event.target.files[0];
+                            var reader = new FileReader();
+                            reader.onload = function (e) {
+                                document.getElementById('imagen').src = e.target.result;
+                            };
+                            reader.readAsDataURL(file);
+                        }
+                    </script>
+
+                    <input type="file" id="fileInput" style="display: none;" onchange="cargarImagen(event)" accept="image/jpeg, image/png, image/jpg"/>
+
+                    <asp:Image ID="imgPhoto" runat="server" Width="100px" Height="100px" ImageAlign="Middle"  BorderStyle="Solid" CssClass="imagen-redondeada" ImageUrl="~/Buttons/usuario.png" onclick="mostrarSelector()" cursor="pointer"/>
                     <br />
                     <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/eliminar.png"></asp:ImageButton>
                     <asp:ImageButton runat="server" ID="pictureEdit"  Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/editar.png" ViewStateMode="Enabled"></asp:ImageButton>

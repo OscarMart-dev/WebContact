@@ -107,6 +107,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="About.aspx" />
+    <Content Include="Buttons\agregar-usuario.png" />
+    <Content Include="Buttons\editar.png" />
+    <Content Include="Buttons\eliminar.png" />
+    <Content Include="Buttons\usuario.png" />
     <Content Include="Contact.aspx" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />

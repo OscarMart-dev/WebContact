@@ -32,4 +32,9 @@
 .imagen-redondeada {
     border-radius: 50%;
 }
+
+img:hover {
+    cursor: pointer;
+}
+
 }
