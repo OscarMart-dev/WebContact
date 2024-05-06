@@ -81,10 +81,10 @@
 
                     </fieldset> 
                     
-                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float=right;></asp:ImageButton>
-                    <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" OnClientClick="mostrarMensaje();" OnClick="btnGuardar_Click" BackColor="#0099FF" BorderStyle="None"></asp:Button>
+                    <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click"></asp:ImageButton>
+                    <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" OnClientClick="mostrarMensaje();" BackColor="#0099FF" BorderStyle="None" OnClick="btnGuardar_Click"></asp:Button>
+                    <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" BackColor="#dc3545" BorderStyle="None"></asp:Button>
 
-                    
                     
                 </div>
 

@@ -7,7 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
+using System.Xml.Linq;
 using MySql.Data.MySqlClient;
 
 
@@ -75,6 +77,9 @@ namespace WebContact
 
         }
 
+        string opcion = null;
+
+        
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -83,9 +88,52 @@ namespace WebContact
             string phone = txtboxPhone.Text;
             string post = txtboxPost.Text;
             string phone_emp = txtboxOfficePhone.Text;
+            
 
-            data get = new data();
-            get.setUpdate(id, name, phone, post, phone_emp);
+            if (opcion=="A") {
+                data insert = new data();
+                insert.getInsert(id,name,phone,post, phone_emp);
+                insert.setImageUpdate(id,ImageToByteArray());
+                insert.getSelected(id);
+                btnCancelar.Visible = false;
+                btnGuardar.Visible=false;
+                dropdownNombres.Visible = true;
+                pictureEdit.Visible = true;
+                pictureDelete.Visible = true;
+                agregar.Visible = true;
+                TextBoxName.ReadOnly = true;
+                txtboxPhone.ReadOnly = true;
+                txtboxId.ReadOnly = true;
+                txtboxOfficePhone.ReadOnly = true;
+                txtboxPost.ReadOnly = true;
+
+            }
+            if (opcion == "C") {
+                data get = new data();
+                get.setUpdate(id, name, phone, post, phone_emp);
+            }
+        }
+
+        
+        private byte[] ImageToByteArray()
+        {
+            HttpPostedFile uploadedFile = Request.Files["file"];
+            byte[] photo;
+            if (uploadedFile != null && uploadedFile.ContentLength > 0)
+            {
+                byte[] imageData;
+                using (Stream stream = uploadedFile.InputStream)
+                {
+                    using (MemoryStream memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        imageData = memoryStream.ToArray();
+                    } 
+                }
+
+                photo = imageData;
+            }
+            return null;
 
         }
 
@@ -164,8 +212,28 @@ namespace WebContact
             dropdownNombres.Items.Insert(0, new ListItem(" ", "0"));
         }
 
-       
-
-
+        protected void agregar_Click(object sender, ImageClickEventArgs e)
+        {
+            dropdownNombres.Visible = false;
+            pictureEdit.Visible = false;
+            pictureDelete.Visible=false;
+            agregar.Visible = false;
+            TextBoxName.ReadOnly = false;
+            txtboxPhone.ReadOnly = false;
+            txtboxId.ReadOnly = false;  
+            txtboxOfficePhone.ReadOnly = false; 
+            txtboxPost.ReadOnly = false;
+            ///hay que pensar como hacer que cuando se de clic se muestre el input file 
+            btnGuardar.Visible = true;
+            btnCancelar.Visible = true;
+            ///se dejan los valores vacios en dado caso  que vengan llenos
+            TextBoxName.Text = null;
+            txtboxPhone.Text = null;
+            txtboxId.Text = null;
+            txtboxOfficePhone.Text = null;
+            txtboxPost.Text = null;
+            imagen.Src = "Buttons/atencion.png";
+            opcion = "A";//por ultimo se define la opcion A para agregar para reutilar el botón
+        }
     }
 }
