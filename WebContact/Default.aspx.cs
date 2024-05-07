@@ -93,7 +93,7 @@ namespace WebContact
            // if (opcion=="A") {
                 data insert = new data();
                 insert.getInsert(id,name,phone,post, phone_emp);
-                insert.setImageUpdate(id, ImageToByteArray(file));
+                insert.setImageUpdate(id, ConvertirImagenABytes(file));
                 insert.getSelected(id);
                 btnCancelar.Visible = false;
                 btnGuardar.Visible=false;
@@ -141,7 +141,37 @@ namespace WebContact
         }
 
 
-        protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
+        public byte[] ConvertirImagenABytes(HttpPostedFileBase file)
+        {
+            byte[] imagenBytes = null;
+
+            if (file != null && file.ContentLength > 0)
+            {
+                try
+                {
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        file.InputStream.CopyTo(ms);
+                        imagenBytes = ms.ToArray();
+                    }
+
+                    Console.WriteLine("Imagen convertida a bytes correctamente.");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine("Error al convertir la imagen a bytes: " + ex.Message);
+                }
+            }
+            else
+            {
+                Console.WriteLine("No se ha seleccionado ningún archivo.");
+            }
+
+            return imagenBytes;
+        }
+    
+
+    protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
         {
             dropdownNombres.Visible = false;
             btnGuardar.Visible = true;
