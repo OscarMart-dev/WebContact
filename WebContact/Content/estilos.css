@@ -1,7 +1,4 @@
-﻿body {
-    .groupBox
-
-{
+﻿body .groupBox {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -116,4 +113,3 @@ html, body {
     from { transform: translateX(10px); }
 }
 
-}

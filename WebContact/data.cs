@@ -13,12 +13,12 @@ namespace WebContact
         public string name { get; set; }
         public string phone { get; set; }
         public byte[] image { get; set; }
-
         public string base64String { get; set; }
         public string id { get; set; }
-
         public string post { get; set; }
         public string office_phone { get; set; }
+
+        public HttpPostedFileBase file { get; set; }
 
         public static List<data> list = new List<data>();
 

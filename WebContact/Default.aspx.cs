@@ -77,9 +77,9 @@ namespace WebContact
 
         }
 
-        string opcion = null;
+       // string opcion = null;
 
-        
+        public HttpPostedFileBase file { get; set; }
 
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -90,10 +90,10 @@ namespace WebContact
             string phone_emp = txtboxOfficePhone.Text;
             
 
-            if (opcion=="A") {
+           // if (opcion=="A") {
                 data insert = new data();
                 insert.getInsert(id,name,phone,post, phone_emp);
-                insert.setImageUpdate(id,ImageToByteArray());
+                insert.setImageUpdate(id, ImageToByteArray(file));
                 insert.getSelected(id);
                 btnCancelar.Visible = false;
                 btnGuardar.Visible=false;
@@ -107,35 +107,39 @@ namespace WebContact
                 txtboxOfficePhone.ReadOnly = true;
                 txtboxPost.ReadOnly = true;
 
-            }
-            if (opcion == "C") {
-                data get = new data();
-                get.setUpdate(id, name, phone, post, phone_emp);
-            }
+            //}
+            
+               // data get = new data();
+                //get.setUpdate(id, name, phone, post, phone_emp);
+            
         }
 
-        
-        private byte[] ImageToByteArray()
+
+        private byte[] ImageToByteArray (HttpPostedFileBase file)
         {
-            HttpPostedFile uploadedFile = Request.Files["file"];
-            byte[] photo;
-            if (uploadedFile != null && uploadedFile.ContentLength > 0)
-            {
-                byte[] imageData;
-                using (Stream stream = uploadedFile.InputStream)
+
+                try
                 {
-                    using (MemoryStream memoryStream = new MemoryStream())
+                if (file == null) return null;
+                    
+                byte[] archivoBytes;
+                    using (var binaryReader = new BinaryReader(file.InputStream))
                     {
-                        stream.CopyTo(memoryStream);
-                        imageData = memoryStream.ToArray();
-                    } 
+                        archivoBytes = binaryReader.ReadBytes(file.ContentLength);
+                    return archivoBytes;
+                  
                 }
-
-                photo = imageData;
-            }
-            return null;
-
+                    // Haz lo que necesites con el arreglo de bytes...
+                   
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error al convertir la imagen a arreglo de bytes: {ex.Message}");
+                    return null;
+                }
+            
         }
+
 
         protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
         {
@@ -233,7 +237,7 @@ namespace WebContact
             txtboxOfficePhone.Text = null;
             txtboxPost.Text = null;
             imagen.Src = "Buttons/atencion.png";
-            opcion = "A";//por ultimo se define la opcion A para agregar para reutilar el botón
+            //opcion = "A";//por ultimo se define la opcion A para agregar para reutilar el botón
         }
     }
 }
