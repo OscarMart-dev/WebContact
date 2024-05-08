@@ -17,7 +17,19 @@ function notificar(tipo){
             break;
 
         case 'warning':
-            notificacion.warning('warning rojo')
+            notificacion.warning('El contacto ya existe')
+            break;
+
+        case 'obligId':
+            notificacion.alert('El N° Identificación es obligatorio')
+            break;
+
+        case 'obligNom':
+            notificacion.alert('El Nombre es obligatorio')
+            break;
+
+        case 'obligMov':
+            notificacion.alert('El Móvil es obligatorio')
             break;
 
         default:

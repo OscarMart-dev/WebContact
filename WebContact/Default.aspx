@@ -37,13 +37,13 @@
                         <fieldset class="groupBox">
                             <legend>Nombre</legend>
 
-                            <asp:TextBox ID="TextBoxName" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ClientIDMode="Static"></asp:TextBox>
+                            <asp:TextBox ID="TextBoxName" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
                         </fieldset>
                         <fieldset class="groupBox">
 
                             <legend>Móvil</legend>
 
-                            <asp:TextBox ID="txtboxPhone" runat="server" pattern="[0-9]*" CssClass="TextBox"></asp:TextBox>
+                            <asp:TextBox ID="txtboxPhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
 
                         </fieldset>
 
@@ -51,7 +51,7 @@
 
                             <legend>N° Identificación</legend>
 
-                            <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox"></asp:TextBox>
+                            <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
 
                         </fieldset>
 
@@ -59,14 +59,14 @@
 
                             <legend>Móvil Empresarial</legend>
 
-                            <asp:TextBox ID="txtboxOfficePhone" runat="server" pattern="[0-9]*" CssClass="TextBox"></asp:TextBox>
+                            <asp:TextBox ID="txtboxOfficePhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
 
                         </fieldset>
                         <fieldset class="groupBox">
 
                             <legend>Cargo</legend>
 
-                            <asp:TextBox ID="txtboxPost" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox"></asp:TextBox>
+                            <asp:TextBox ID="txtboxPost" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
 
                         </fieldset>
 

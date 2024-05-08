@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -78,10 +79,11 @@ namespace WebContact
 
         }
 
-       // string opcion = null;
-
         public HttpPostedFileBase file { get; set; }
 
+        public Regex regexSoloLetras = new Regex("^[a-zA-Z]+$");
+
+        public string opcion = null;
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             string id = txtboxId.Text;
@@ -96,7 +98,20 @@ namespace WebContact
             data insert = new data();
             insert.existeContacto(id);
 
-            if (id != insert.exist)
+            if (string.IsNullOrEmpty(txtboxId.Text))
+            {
+                btnGuardar.OnClientClick = "notificar('obligId')";
+            }
+
+            else if (string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                btnGuardar.OnClientClick = "notificar('obligNom')";
+            }
+            else if (string.IsNullOrEmpty(txtboxPhone.Text))
+            {
+                btnGuardar.OnClientClick = "notificar('obligMov')";
+            }
+            else if (id != insert.exist)
             {
                 HttpPostedFileBase archivoBase = new HttpPostedFileWrapper(archivoImagen);
                 insert.getInsert(id, name, phone, post, phone_emp);
@@ -106,6 +121,7 @@ namespace WebContact
                 btnCancelar.Visible = false;
                 btnGuardar.Visible = false;
                 dropdownNombres.Visible = true;
+                dropdownNombres.SelectedValue = null;
                 pictureEdit.Visible = true;
                 pictureDelete.Visible = true;
                 agregar.Visible = true;
@@ -114,41 +130,44 @@ namespace WebContact
                 txtboxId.ReadOnly = true;
                 txtboxOfficePhone.ReadOnly = true;
                 txtboxPost.ReadOnly = true;
+                btnGuardar.OnClientClick = "confirmation()";
             }
-            else {
-                btnGuardar.OnClientClick = "";
+            else
+            {
+                btnGuardar.OnClientClick = "notificar('warning')";
             }
+            
 
             //}
-            
-               // data get = new data();
-                //get.setUpdate(id, name, phone, post, phone_emp);
-            
+
+            // data get = new data();
+            //get.setUpdate(id, name, phone, post, phone_emp);
+
         }
 
 
-        private byte[] ImageToByteArray (HttpPostedFileBase file)
+        private byte[] ImageToByteArray(HttpPostedFileBase file)
         {
 
-                try
-                {
+            try
+            {
                 if (file == null) return null;
-                    
+
                 byte[] archivoBytes;
-                    using (var binaryReader = new BinaryReader(file.InputStream))
-                    {
-                        archivoBytes = binaryReader.ReadBytes(file.ContentLength);
-                    return archivoBytes;
-                  
-                }
-                   
-                }
-                catch (Exception ex)
+                using (var binaryReader = new BinaryReader(file.InputStream))
                 {
-                    Console.WriteLine($"Error al convertir la imagen a arreglo de bytes: {ex.Message}");
-                    return null;
+                    archivoBytes = binaryReader.ReadBytes(file.ContentLength);
+                    return archivoBytes;
+
                 }
-            
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error al convertir la imagen a arreglo de bytes: {ex.Message}");
+                return null;
+            }
+
         }
 
 
@@ -199,7 +218,7 @@ namespace WebContact
             pictureDelete.Visible = false;
         }
 
-       
+
 
         private byte[] ImageToByteArray(System.Drawing.Image image)
         {
@@ -242,7 +261,8 @@ namespace WebContact
                 {
                     imagen.Src = "data:image/jpeg;base64," + get.base64String;
                 }
-                else {
+                else
+                {
                     imagen.Src = "Buttons/edit.png";///hay que cambiar esta imagen
                 }
             }
@@ -270,12 +290,12 @@ namespace WebContact
         {
             dropdownNombres.Visible = false;
             pictureEdit.Visible = false;
-            pictureDelete.Visible=false;
+            pictureDelete.Visible = false;
             agregar.Visible = false;
             TextBoxName.ReadOnly = false;
             txtboxPhone.ReadOnly = false;
-            txtboxId.ReadOnly = false;  
-            txtboxOfficePhone.ReadOnly = false; 
+            txtboxId.ReadOnly = false;
+            txtboxOfficePhone.ReadOnly = false;
             txtboxPost.ReadOnly = false;
             ///hay que pensar como hacer que cuando se de clic se muestre el input file 
             btnGuardar.Visible = true;
