@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -50,7 +51,7 @@ namespace WebContact
                 MySqlCommand cmd = conn.CreateCommand();
                 cmd.CommandText = sql;
                 {
-                    cmd.Parameters.AddWithValue("reqn_name", prefixText + "%");
+                    cmd.Parameters.AddWithValue("reqn_name", "%" + prefixText + "%");
                     using (MySqlDataReader reader = cmd.ExecuteReader())
                     {
                         while (reader.Read())
@@ -88,15 +89,22 @@ namespace WebContact
             string phone = txtboxPhone.Text;
             string post = txtboxPost.Text;
             string phone_emp = txtboxOfficePhone.Text;
-            
+            HttpPostedFile archivoImagen = Request.Files["imgFile"];
 
-           // if (opcion=="A") {
-                data insert = new data();
-                insert.getInsert(id,name,phone,post, phone_emp);
-                insert.setImageUpdate(id, ConvertirImagenABytes(file));
+
+            // if (opcion=="A") {
+            data insert = new data();
+            insert.existeContacto(id);
+
+            if (id != insert.exist)
+            {
+                HttpPostedFileBase archivoBase = new HttpPostedFileWrapper(archivoImagen);
+                insert.getInsert(id, name, phone, post, phone_emp);
+                insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
                 insert.getSelected(id);
+                LlenarDropDownList();
                 btnCancelar.Visible = false;
-                btnGuardar.Visible=false;
+                btnGuardar.Visible = false;
                 dropdownNombres.Visible = true;
                 pictureEdit.Visible = true;
                 pictureDelete.Visible = true;
@@ -106,6 +114,10 @@ namespace WebContact
                 txtboxId.ReadOnly = true;
                 txtboxOfficePhone.ReadOnly = true;
                 txtboxPost.ReadOnly = true;
+            }
+            else {
+                btnGuardar.OnClientClick = "";
+            }
 
             //}
             
@@ -129,7 +141,6 @@ namespace WebContact
                     return archivoBytes;
                   
                 }
-                    // Haz lo que necesites con el arreglo de bytes...
                    
                 }
                 catch (Exception ex)
@@ -149,11 +160,7 @@ namespace WebContact
             {
                 try
                 {
-                    using (MemoryStream ms = new MemoryStream())
-                    {
-                        file.InputStream.CopyTo(ms);
-                        imagenBytes = ms.ToArray();
-                    }
+                    imagenBytes = ConvertirImagenAPNG(file);
 
                     Console.WriteLine("Imagen convertida a bytes correctamente.");
                 }
@@ -169,9 +176,22 @@ namespace WebContact
 
             return imagenBytes;
         }
-    
+        public byte[] ConvertirImagenAPNG(HttpPostedFileBase archivo)
+        {
+            using (var imagenOriginal = System.Drawing.Image.FromStream(archivo.InputStream))
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    // Guardar la imagen en formato PNG en el MemoryStream
+                    imagenOriginal.Save(memoryStream, ImageFormat.Png);
+                    // Retornar los bytes de la imagen
+                    return memoryStream.ToArray();
+                }
+            }
+        }
 
-    protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
+
+        protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
         {
             dropdownNombres.Visible = false;
             btnGuardar.Visible = true;
@@ -266,8 +286,13 @@ namespace WebContact
             txtboxId.Text = null;
             txtboxOfficePhone.Text = null;
             txtboxPost.Text = null;
-            imagen.Src = "Buttons/atencion.png";
+            //imagen.Src = "Buttons/atencion.png";
             //opcion = "A";//por ultimo se define la opcion A para agregar para reutilar el botón
+        }
+
+        protected void pictureDelete_Click(object sender, ImageClickEventArgs e)
+        {
+
         }
     }
 }

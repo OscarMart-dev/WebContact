@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
+using System.Web.UI.WebControls;
 using MySql.Data.MySqlClient;
 
 namespace WebContact
@@ -15,6 +17,7 @@ namespace WebContact
         public byte[] image { get; set; }
         public string base64String { get; set; }
         public string id { get; set; }
+        public string exist { get; set; }
         public string post { get; set; }
         public string office_phone { get; set; }
 
@@ -64,7 +67,7 @@ namespace WebContact
         {
             MySqlConnection conn = new MySqlConnection(CONN_PARAMS);
             conn.Open();
-            string sql = "SELECT * FROM req_phonebook where reqc_id =" + id+ " order by reqn_name asc";
+            string sql = "SELECT * FROM req_phonebook where reqc_id ='" + id+ "' order by reqn_name asc";
             MySqlCommand cmd = conn.CreateCommand();
             cmd.CommandText = sql;
             MySqlDataReader reader = cmd.ExecuteReader();
@@ -184,6 +187,28 @@ namespace WebContact
             cmd.CommandText = sql;
             cmd.ExecuteNonQuery();
             //MessageBox.Show("Contacto Eliminado");
+            cmd.Dispose();
+            conn.Close();
+        }
+
+        public void existeContacto(string id)
+        {
+            MySqlConnection conn = new MySqlConnection(CONN_PARAMS);
+            conn.Open();
+            string sql = "SELECT reqc_id FROM req_phonebook where reqc_id ='" + id + "' order by reqn_name asc";
+            MySqlCommand cmd = conn.CreateCommand();
+            cmd.CommandText = sql;
+            MySqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.Read())
+            {
+                this.exist = reader["reqc_id"].ToString();
+
+            }
+            else {
+                this.exist = null;
+            }
+            reader.Dispose();
             cmd.Dispose();
             conn.Close();
         }
