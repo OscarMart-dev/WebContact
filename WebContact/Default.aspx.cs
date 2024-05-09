@@ -7,12 +7,14 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using System.Xml.Linq;
 using MySql.Data.MySqlClient;
+using static System.Net.Mime.MediaTypeNames;
 
 
 namespace WebContact
@@ -28,6 +30,9 @@ namespace WebContact
             }
         }
 
+        public string temp = null;
+
+        
         private void InicializarDropDownNombres()
         {
             // Lógica para inicializar el DropDownList y cargar los nombres desde la base de datos
@@ -70,20 +75,34 @@ namespace WebContact
         protected void pictureEdit_Click(object sender, ImageClickEventArgs e)
         {
 
-            btnGuardar.Visible = true;
-            txtboxId.ReadOnly = true;
-            TextBoxName.ReadOnly = false;
-            txtboxPhone.ReadOnly = false;
-            txtboxOfficePhone.ReadOnly = false;
-            txtboxPost.ReadOnly = false;
-
+            opcion = "E";
+            if (string.IsNullOrEmpty(TextBoxName.Text))
+            {
+                pictureEdit.OnClientClick = "notificar('info')";
+            }
+            else
+            {
+                temp = txtboxId.Text;
+                dropdownNombres.Visible = false;
+                pictureEdit.Visible = false;
+                pictureDelete.Visible = false;
+                agregar.Visible = false;
+                TextBoxName.ReadOnly = false;
+                txtboxPhone.ReadOnly = false;
+                txtboxOfficePhone.ReadOnly = false;
+                txtboxPost.ReadOnly = false;
+                ///hay que pensar como hacer que cuando se de clic se muestre el input file 
+                btnGuardar.Visible = true;
+                btnCancelar.Visible = true;
+            }
+            
         }
 
         public HttpPostedFileBase file { get; set; }
 
         public Regex regexSoloLetras = new Regex("^[a-zA-Z]+$");
 
-        public string opcion = null;
+        public string opcion { get; set; }
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             string id = txtboxId.Text;
@@ -92,57 +111,84 @@ namespace WebContact
             string post = txtboxPost.Text;
             string phone_emp = txtboxOfficePhone.Text;
             HttpPostedFile archivoImagen = Request.Files["imgFile"];
-
-
-            // if (opcion=="A") {
             data insert = new data();
-            insert.existeContacto(id);
+            HttpPostedFileBase archivoBase = new HttpPostedFileWrapper(archivoImagen);
+            TimeSpan interval = new TimeSpan(0, 0, 5);
 
-            if (string.IsNullOrEmpty(txtboxId.Text))
-            {
-                btnGuardar.OnClientClick = "notificar('obligId')";
+            if (opcion.Equals("A")) {
+                
+                insert.existeContacto(id);
+                
+                if (string.IsNullOrEmpty(TextBoxName.Text))
+                {
+                    btnGuardar.OnClientClick = "notificar('alert')";
+                }
+                else if (string.IsNullOrEmpty(txtboxPhone.Text))
+                {
+                    btnGuardar.OnClientClick = "notificar('obligMov')";
+                }
+                else if (string.IsNullOrEmpty(txtboxId.Text))
+                {
+                    btnGuardar.OnClientClick = "notificar('obligId')";
+                }
+                else if (id != insert.exist)
+                {
+                    
+                    insert.getInsert(id, name, phone, post, phone_emp);
+                    insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
+                    insert.getSelected(id);
+                    LlenarDropDownList();
+                    btnCancelar.Visible = false;
+                    btnGuardar.Visible = false;
+                    dropdownNombres.Visible = true;
+                    dropdownNombres.SelectedValue = null;
+                    pictureEdit.Visible = true;
+                    pictureDelete.Visible = true;
+                    agregar.Visible = true;
+                    TextBoxName.ReadOnly = true;
+                    txtboxPhone.ReadOnly = true;
+                    txtboxId.ReadOnly = true;
+                    txtboxOfficePhone.ReadOnly = true;
+                    txtboxPost.ReadOnly = true;
+                    if (insert.base64String != null)
+                    {
+                        imagen.Src = "data:image/jpeg;base64," + insert.base64String;
+                    }
+                    else
+                    {
+                        imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
+                    }
+                    // btnGuardar.OnClientClick = "confirmation()";
+                    btnGuardar.OnClientClick = "notificar('success')";
+                }
+            } else{
+                if (string.IsNullOrEmpty(TextBoxName.Text))
+                {
+                    btnGuardar.OnClientClick = "notificar('obligNom')";
+                }
+                else if (string.IsNullOrEmpty(txtboxPhone.Text))
+                {
+                    btnGuardar.OnClientClick = "notificar('obligMov')";
+                }
+                else
+                {
+                    insert.setUpdate(id, name, phone, post, phone_emp);
+                    insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
+                    if (insert.base64String != null)
+                    {
+                        imagen.Src = "data:image/jpeg;base64," + insert.base64String;
+                    }
+                    else
+                    {
+                        imagen.Src = "Buttons/atencion.png";
+                    }
+
+                    btnGuardar.OnClientClick = "notificar('success')";
+                }
+
             }
 
-            else if (string.IsNullOrEmpty(TextBoxName.Text))
-            {
-                btnGuardar.OnClientClick = "notificar('obligNom')";
-            }
-            else if (string.IsNullOrEmpty(txtboxPhone.Text))
-            {
-                btnGuardar.OnClientClick = "notificar('obligMov')";
-            }
-            else if (id != insert.exist)
-            {
-                HttpPostedFileBase archivoBase = new HttpPostedFileWrapper(archivoImagen);
-                insert.getInsert(id, name, phone, post, phone_emp);
-                insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
-                insert.getSelected(id);
-                LlenarDropDownList();
-                btnCancelar.Visible = false;
-                btnGuardar.Visible = false;
-                dropdownNombres.Visible = true;
-                dropdownNombres.SelectedValue = null;
-                pictureEdit.Visible = true;
-                pictureDelete.Visible = true;
-                agregar.Visible = true;
-                TextBoxName.ReadOnly = true;
-                txtboxPhone.ReadOnly = true;
-                txtboxId.ReadOnly = true;
-                txtboxOfficePhone.ReadOnly = true;
-                txtboxPost.ReadOnly = true;
-                btnGuardar.OnClientClick = "confirmation()";
-            }
-            else
-            {
-                btnGuardar.OnClientClick = "notificar('warning')";
-            }
-            
-
-            //}
-
-            // data get = new data();
-            //get.setUpdate(id, name, phone, post, phone_emp);
-
+            Thread.Sleep(interval);
         }
 
 
@@ -210,13 +256,13 @@ namespace WebContact
         }
 
 
-        protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
+       /* protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
         {
             dropdownNombres.Visible = false;
             btnGuardar.Visible = true;
             pictureEdit.Visible = false;
             pictureDelete.Visible = false;
-        }
+        }*/
 
 
 
@@ -254,6 +300,7 @@ namespace WebContact
                 // Asignar los valores del registro a los controles del formulario se debe poner base 64 para mostrarla
                 TextBoxName.Text = get.name;
                 txtboxId.Text = get.id;
+                temp=get.id;
                 txtboxPhone.Text = get.phone;
                 txtboxOfficePhone.Text = get.office_phone;
                 txtboxPost.Text = get.post;
@@ -297,6 +344,7 @@ namespace WebContact
             txtboxId.ReadOnly = false;
             txtboxOfficePhone.ReadOnly = false;
             txtboxPost.ReadOnly = false;
+             imagen.Src = "Buttons/atencion.png";///imagen por defecto
             ///hay que pensar como hacer que cuando se de clic se muestre el input file 
             btnGuardar.Visible = true;
             btnCancelar.Visible = true;
@@ -307,11 +355,77 @@ namespace WebContact
             txtboxOfficePhone.Text = null;
             txtboxPost.Text = null;
             //imagen.Src = "Buttons/atencion.png";
-            //opcion = "A";//por ultimo se define la opcion A para agregar para reutilar el botón
+            opcion = "A";
         }
 
         protected void pictureDelete_Click(object sender, ImageClickEventArgs e)
         {
+            if (string.IsNullOrEmpty(txtboxId.Text))
+            {
+                pictureDelete.OnClientClick = "notificar('delexist')";
+            }
+            else {
+                string id = txtboxId.Text;
+                data delete = new data();
+                delete.getDelete(id);
+                pictureDelete.OnClientClick = "notificar('delete')";
+            }
+        }
+
+        protected void btnCancelar_Click(object sender, EventArgs e)
+        {
+
+            btnCancelar.Visible = false;
+            btnGuardar.Visible = false;
+            dropdownNombres.Visible = true;
+            pictureEdit.Visible = true;
+            pictureDelete.Visible = true;
+            agregar.Visible = true;
+            TextBoxName.ReadOnly = true;
+            txtboxPhone.ReadOnly = true;
+            txtboxId.ReadOnly = true;
+            txtboxOfficePhone.ReadOnly = true;
+            txtboxPost.ReadOnly = true;
+
+            if (opcion=="A")
+            {
+
+                if (string.IsNullOrEmpty(temp))
+                {
+
+                    imagen.Src = "Buttons/atencion.png";///imagen por defecto
+
+                }
+                else
+                {
+
+                    data retorna = new data();
+                    retorna.getSelected(temp);
+                    if (retorna.base64String != null)
+                    {
+                        imagen.Src = "data:image/jpeg;base64," + retorna.base64String;
+                    }
+                    else
+                    {
+                        imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
+                    }
+                }
+
+             }else
+                {
+                data retorna = new data();
+                retorna.getSelected(txtboxId.Text);
+                if (retorna.base64String != null)
+                {
+                    imagen.Src = "data:image/jpeg;base64," + retorna.base64String;
+                }
+                else
+                {
+                    imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
+                }
+
+            }
+            
 
         }
     }

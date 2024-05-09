@@ -113,19 +113,19 @@ html, body {
     from { transform: translateX(10px); }
 }
 
-.success {
+.success{
     background-color: #119142;
 }
 
-.info {
+.info{
     background-color: #3275b4;
 }
 
-.alert {
-    background-color: #af2117;
+.alert{
+    background-color: #ffd800;
 }
 
-.warning {
+.warning{
     background-color: #d3a72e;
 }
 

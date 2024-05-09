@@ -5,11 +5,11 @@ function notificar(tipo){
     switch (tipo) {
 
         case 'success':
-            notificacion.success('bien verde')
+            notificacion.success('Contacto Creado')
             break;
 
         case 'info':
-            notificacion.info('info azul')
+            notificacion.info('No hay registros para editar')
             break;
 
         case 'alert':
@@ -21,7 +21,7 @@ function notificar(tipo){
             break;
 
         case 'obligId':
-            notificacion.alert('El N° Identificación es obligatorio')
+            notificacion.alert('El N Identificacion es obligatorio')
             break;
 
         case 'obligNom':
@@ -29,7 +29,15 @@ function notificar(tipo){
             break;
 
         case 'obligMov':
-            notificacion.alert('El Móvil es obligatorio')
+            notificacion.alert('El Movil es obligatorio')
+            break;
+
+        case 'delexist':
+            notificacion.alert('No hay contacto para borrar')
+            break;
+
+        case 'delete':
+            notificacion.warning('Contacto Eliminado')
             break;
 
         default:
@@ -37,5 +45,6 @@ function notificar(tipo){
             break;
 
     }
+
 
 }

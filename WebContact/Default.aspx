@@ -30,7 +30,7 @@
 
                         <br />
                         <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/delete.png" class="ImageButton" OnClientClick="notificar('info')"></asp:ImageButton>
-                        <asp:ImageButton runat="server" ID="pictureEdit" Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton"></asp:ImageButton>
+                        <asp:ImageButton runat="server" ID="pictureEdit" Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton" OnClick="pictureEdit_Click"></asp:ImageButton>
                         <br />
                         <asp:Image runat="server"></asp:Image>
                         <br />
@@ -71,8 +71,8 @@
                         </fieldset>
 
                         <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click"></asp:ImageButton>
-                        <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" OnClientClick="mostrarMensaje();" BackColor="#0099FF" BorderStyle="None" OnClick="btnGuardar_Click"></asp:Button>
-                        <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" BackColor="#dc3545" BorderStyle="None"></asp:Button>
+                        <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar"  BackColor="#0099FF" BorderStyle="None" OnClick="btnGuardar_Click"></asp:Button>
+                        <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" BackColor="#dc3545" BorderStyle="None" OnClick="btnCancelar_Click"></asp:Button>
 
                     </div>
 
