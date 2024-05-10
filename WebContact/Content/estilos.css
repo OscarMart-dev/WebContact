@@ -1,4 +1,10 @@
-﻿body .groupBox {
+﻿body {
+    background-image: url('../buttons/backgroud.png');
+    background-size: cover; /* Ajusta la imagen para cubrir toda el área del body */
+    /* Otros estilos si los necesitas */
+}
+
+body .groupBox {
     border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
@@ -113,16 +119,16 @@ html, body {
     from { transform: translateX(10px); }
 }
 
-.success{
-    background-color: #119142;
+.success {
+    background-color: #6DF10E;
 }
 
 .info{
     background-color: #3275b4;
 }
 
-.alert{
-    background-color: #ffd800;
+.alert {
+    background-color: #F1E30E;
 }
 
 .warning{

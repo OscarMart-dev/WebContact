@@ -21,6 +21,9 @@ namespace WebContact
 {
     public partial class _Default : Page
     {
+        private string temp="";
+        private string opcion = "";
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
@@ -30,9 +33,8 @@ namespace WebContact
             }
         }
 
-        public string temp = null;
-
         
+
         private void InicializarDropDownNombres()
         {
             // Lógica para inicializar el DropDownList y cargar los nombres desde la base de datos
@@ -94,15 +96,17 @@ namespace WebContact
                 ///hay que pensar como hacer que cuando se de clic se muestre el input file 
                 btnGuardar.Visible = true;
                 btnCancelar.Visible = true;
+                Response.Cookies["Opcion"].Value = opcion;
+                Response.Cookies["temp"].Value = opcion;
             }
-            
+
         }
 
         public HttpPostedFileBase file { get; set; }
 
         public Regex regexSoloLetras = new Regex("^[a-zA-Z]+$");
 
-        public string opcion { get; set; }
+        
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
             string id = txtboxId.Text;
@@ -115,10 +119,11 @@ namespace WebContact
             HttpPostedFileBase archivoBase = new HttpPostedFileWrapper(archivoImagen);
             TimeSpan interval = new TimeSpan(0, 0, 5);
 
-            if (opcion.Equals("A")) {
-                
+            if (opcion.Equals("A"))
+            {
+
                 insert.existeContacto(id);
-                
+
                 if (string.IsNullOrEmpty(TextBoxName.Text))
                 {
                     btnGuardar.OnClientClick = "notificar('alert')";
@@ -133,7 +138,7 @@ namespace WebContact
                 }
                 else if (id != insert.exist)
                 {
-                    
+
                     insert.getInsert(id, name, phone, post, phone_emp);
                     insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
                     insert.getSelected(id);
@@ -161,7 +166,9 @@ namespace WebContact
                     // btnGuardar.OnClientClick = "confirmation()";
                     btnGuardar.OnClientClick = "notificar('success')";
                 }
-            } else{
+            }
+            else
+            {
                 if (string.IsNullOrEmpty(TextBoxName.Text))
                 {
                     btnGuardar.OnClientClick = "notificar('obligNom')";
@@ -256,16 +263,6 @@ namespace WebContact
         }
 
 
-       /* protected void pictureCreate_Click(object sender, ImageClickEventArgs e)
-        {
-            dropdownNombres.Visible = false;
-            btnGuardar.Visible = true;
-            pictureEdit.Visible = false;
-            pictureDelete.Visible = false;
-        }*/
-
-
-
         private byte[] ImageToByteArray(System.Drawing.Image image)
         {
             try
@@ -300,10 +297,11 @@ namespace WebContact
                 // Asignar los valores del registro a los controles del formulario se debe poner base 64 para mostrarla
                 TextBoxName.Text = get.name;
                 txtboxId.Text = get.id;
-                temp=get.id;
+                temp = get.id;
                 txtboxPhone.Text = get.phone;
                 txtboxOfficePhone.Text = get.office_phone;
                 txtboxPost.Text = get.post;
+                temp = Request.Cookies["temp"]?.Value ?? "";
                 if (get.base64String != null)
                 {
                     imagen.Src = "data:image/jpeg;base64," + get.base64String;
@@ -335,6 +333,7 @@ namespace WebContact
 
         protected void agregar_Click(object sender, ImageClickEventArgs e)
         {
+            opcion = "A";
             dropdownNombres.Visible = false;
             pictureEdit.Visible = false;
             pictureDelete.Visible = false;
@@ -344,8 +343,8 @@ namespace WebContact
             txtboxId.ReadOnly = false;
             txtboxOfficePhone.ReadOnly = false;
             txtboxPost.ReadOnly = false;
-             imagen.Src = "Buttons/atencion.png";///imagen por defecto
-            ///hay que pensar como hacer que cuando se de clic se muestre el input file 
+            imagen.Src = "Buttons/atencion.png";///imagen por defecto
+                                                ///hay que pensar como hacer que cuando se de clic se muestre el input file 
             btnGuardar.Visible = true;
             btnCancelar.Visible = true;
             ///se dejan los valores vacios en dado caso  que vengan llenos
@@ -355,26 +354,16 @@ namespace WebContact
             txtboxOfficePhone.Text = null;
             txtboxPost.Text = null;
             //imagen.Src = "Buttons/atencion.png";
-            opcion = "A";
+            Response.Cookies["Opcion"].Value = opcion;
+            Console.WriteLine("El último valor de la variable es: " + opcion);
         }
 
-        protected void pictureDelete_Click(object sender, ImageClickEventArgs e)
-        {
-            if (string.IsNullOrEmpty(txtboxId.Text))
-            {
-                pictureDelete.OnClientClick = "notificar('delexist')";
-            }
-            else {
-                string id = txtboxId.Text;
-                data delete = new data();
-                delete.getDelete(id);
-                pictureDelete.OnClientClick = "notificar('delete')";
-            }
-        }
 
         protected void btnCancelar_Click(object sender, EventArgs e)
         {
 
+            opcion = Request.Cookies["Opcion"]?.Value ?? "";
+            temp= Request.Cookies["temp"]?.Value ?? "";
             btnCancelar.Visible = false;
             btnGuardar.Visible = false;
             dropdownNombres.Visible = true;
@@ -386,8 +375,8 @@ namespace WebContact
             txtboxId.ReadOnly = true;
             txtboxOfficePhone.ReadOnly = true;
             txtboxPost.ReadOnly = true;
-
-            if (opcion=="A")
+            //Console.WriteLine("El último valor de la variable es: " + opcion);
+            if (opcion == "A")
             {
 
                 if (string.IsNullOrEmpty(temp))
@@ -411,8 +400,9 @@ namespace WebContact
                     }
                 }
 
-             }else
-                {
+            }
+            else
+            {
                 data retorna = new data();
                 retorna.getSelected(txtboxId.Text);
                 if (retorna.base64String != null)
@@ -425,8 +415,41 @@ namespace WebContact
                 }
 
             }
-            
+
 
         }
+
+
+
+        protected void pictureDelete_Click(object sender, ImageClickEventArgs e)
+        {
+            string id = txtboxId.Text;
+            data delete = new data();
+            if (string.IsNullOrEmpty(id))
+            {
+                //pictureDelete.OnClientClick = "return notificar('delexist');";
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('No hay ningún registro para eliminar.');", true);
+            }
+            else
+            {
+                
+                delete.getDelete(id);
+                //pictureDelete.OnClientClick = "notificar('delete')";
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El registro se ha eliminado exitosamente.');", true);
+                dropdownNombres.SelectedValue = null;
+                LlenarDropDownList();
+                TextBoxName.Text = null;
+                txtboxPhone.Text = null;
+                txtboxId.Text = null;
+                txtboxOfficePhone.Text = null;
+                txtboxPost.Text = null;
+                imagen.Src = "Buttons/atencion.png";
+
+            }
+        }
+
+        
+
+        
     }
 }

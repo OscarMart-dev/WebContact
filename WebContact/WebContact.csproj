@@ -108,6 +108,7 @@
     <Content Include="Buttons\agregar-usuario.png" />
     <Content Include="Buttons\agregar.png" />
     <Content Include="Buttons\atencion.png" />
+    <Content Include="Buttons\backgroud.png" />
     <Content Include="Buttons\delete.png" />
     <Content Include="Buttons\edit.png" />
     <Content Include="Buttons\editar.png" />

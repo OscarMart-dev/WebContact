@@ -6,81 +6,79 @@
     <link href="Notification/style.css" rel="stylesheet" />
     <script src="Notification/notifica.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+   
+    <body class="body">
+        <main>
 
-    <main>
-        <center>
-            <form runat="server" method="post" enctype="multipart/form-data">
-                <div class="card" style="width: 20rem;">
+            <center>
+                <form runat="server" method="post" enctype="multipart/form-data">
+                    <div class="card" style="width: 20rem;" background-color: rgba(255, 255, 255, 0.5); >
 
-                    <div class="card-body" id="cardForm">
-                        <asp:ScriptManager runat="server"></asp:ScriptManager>
-
-                        <asp:DropDownList ID="dropdownNombres" runat="server" CssClass="form-control" SelectedIndexChanged="dropdownNombres_SelectedIndexChanged" AutoPostBack="True" OnSelectedIndexChanged="dropdownNombres_SelectedIndexChanged1"></asp:DropDownList>
-
-                        <div class="upload">
-                            <img class="imagen" id="imagen" runat="server">
+                        <div class="card-body" id="cardForm">
+                            <asp:ScriptManager runat="server"></asp:ScriptManager>
+                            <asp:DropDownList ID="dropdownNombres" runat="server" CssClass="form-control" SelectedIndexChanged="dropdownNombres_SelectedIndexChanged" AutoPostBack="True" OnSelectedIndexChanged="dropdownNombres_SelectedIndexChanged1"></asp:DropDownList>
+                            <div class="upload">
+                                <img class="imagen" id="imagen" runat="server">
+                                <input type="file" name="imgFile" id="imgFile" accept="image/*" class="inputfile" onchange="cargarImagen(event)">
+                                <label for="imgFile">
+                                    <i class="fa-solid fa-image"></i>
+                                    selecciona una imagen
+                                </label>
+                            </div>
                             <br />
+                            <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/delete.png" class="ImageButton" OnClientClick="return confirmarEliminacion();" OnClick="pictureDelete_Click"></asp:ImageButton>
+                            <asp:ImageButton runat="server" ID="pictureEdit" Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton" OnClick="pictureEdit_Click"></asp:ImageButton>
                             <br />
-                            <input type="file" name="imgFile" id="imgFile" accept="image/*" class="inputfile" onchange="cargarImagen(event)">
-                            <label for="imgFile">
-                                <i class="fa-solid fa-image"></i>
-                                selecciona una imagen
-                            </label>
+                            <asp:Image runat="server"></asp:Image>
+                            <br />
+                            <fieldset class="groupBox">
+                                <legend>Nombre</legend>
+
+                                <asp:TextBox ID="TextBoxName" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
+                            </fieldset>
+                            <fieldset class="groupBox">
+
+                                <legend>Móvil</legend>
+
+                                <asp:TextBox ID="txtboxPhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
+
+                            </fieldset>
+
+                            <fieldset class="groupBox">
+
+                                <legend>N° Identificación</legend>
+
+                                <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
+
+                            </fieldset>
+
+                            <fieldset class="groupBox">
+
+                                <legend>Móvil Empresarial</legend>
+
+                                <asp:TextBox ID="txtboxOfficePhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
+
+                            </fieldset>
+                            <fieldset class="groupBox">
+
+                                <legend>Cargo</legend>
+
+                                <asp:TextBox ID="txtboxPost" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
+
+                            </fieldset>
+
+                            <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click"></asp:ImageButton>
+                            <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" BackColor="#0099FF" BorderStyle="None" OnClick="btnGuardar_Click"></asp:Button>
+                            <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" BackColor="#dc3545" BorderStyle="None" OnClick="btnCancelar_Click"></asp:Button>
+
                         </div>
 
-                        <br />
-                        <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/delete.png" class="ImageButton" OnClientClick="notificar('info')"></asp:ImageButton>
-                        <asp:ImageButton runat="server" ID="pictureEdit" Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton" OnClick="pictureEdit_Click"></asp:ImageButton>
-                        <br />
-                        <asp:Image runat="server"></asp:Image>
-                        <br />
-                        <fieldset class="groupBox">
-                            <legend>Nombre</legend>
-
-                            <asp:TextBox ID="TextBoxName" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
-                        </fieldset>
-                        <fieldset class="groupBox">
-
-                            <legend>Móvil</legend>
-
-                            <asp:TextBox ID="txtboxPhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
-
-                        </fieldset>
-
-                        <fieldset class="groupBox">
-
-                            <legend>N° Identificación</legend>
-
-                            <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
-
-                        </fieldset>
-
-                        <fieldset class="groupBox">
-
-                            <legend>Móvil Empresarial</legend>
-
-                            <asp:TextBox ID="txtboxOfficePhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
-
-                        </fieldset>
-                        <fieldset class="groupBox">
-
-                            <legend>Cargo</legend>
-
-                            <asp:TextBox ID="txtboxPost" runat="server" pattern="[a-z & A-Z]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
-
-                        </fieldset>
-
-                        <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click"></asp:ImageButton>
-                        <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar"  BackColor="#0099FF" BorderStyle="None" OnClick="btnGuardar_Click"></asp:Button>
-                        <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" BackColor="#dc3545" BorderStyle="None" OnClick="btnCancelar_Click"></asp:Button>
-
                     </div>
-
-                </div>
-            </form>
-        </center>
-
-    </main>
+                </form>
+            </center>
+        </main>
+    </body>
+    
 
     <script type="text/javascript">    
         function cargarImagen(event) {
@@ -101,6 +99,16 @@
                 button: "ok",
             })
         }
+
+       
+        function confirmarEliminacion() {
+            return confirm('¿Estás seguro de realizar esta acción?');
+        }
+
+        function existeEliminacion() {
+            return confirm('No se selecciono un contacto a eliminar');
+        }
+    
     </script>
 
 </asp:Content>
