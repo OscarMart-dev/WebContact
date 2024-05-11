@@ -19,15 +19,15 @@
                             <div class="upload">
                                 <img class="imagen" id="imagen" runat="server">
                                 <br />
-                                <input type="file" name="imgFile" id="imgFile" accept="image/*" class="inputfile" onchange="cargarImagen(event)" disabled="true" >
-                                <label for="imgFile">
+                                <input type="file" name="imgFile" id="imgFile" accept="image/*" class="inputfiledos" onchange="cargarImagen(event)" >
+                                <label for="imgFile" class="labeldos">
                                     <i class="fa-solid fa-image"></i>
                                     selecciona una imagen
                                 </label>
                             </div>
                             <br />
                             <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="pictureDelete" Width="30px" ImageAlign="Right" Height="30px" ImageUrl="~/Buttons/delete.png" class="ImageButton" OnClientClick="return confirmarEliminacion();" OnClick="pictureDelete_Click"></asp:ImageButton>
-                            <asp:ImageButton runat="server" ID="pictureEdit" Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton" OnClick="pictureEdit_Click" OnClientClick="deshabilitarInputFile();"></asp:ImageButton>
+                            <asp:ImageButton runat="server" ID="pictureEdit" Width="30px" Height="30px" ImageAlign="Right" ImageUrl="~/Buttons/edit.png" ViewStateMode="Enabled" class="ImageButton" OnClick="pictureEdit_Click" OnClientClick="cambiarClaseInput();"></asp:ImageButton>
                             <br />
                             <asp:Image runat="server"></asp:Image>
                             <br />
@@ -67,10 +67,10 @@
 
                             </fieldset>
 
-                            <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click"></asp:ImageButton>
+                            <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click" OnClientClick="cambiarClaseInput();"></asp:ImageButton>
                             <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" class="guardar" OnClick="btnGuardar_Click"></asp:Button>
                             <div></div>
-                            <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" class="cancelar" OnClick="btnCancelar_Click"></asp:Button>
+                            <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" class="cancelar" OnClick="btnCancelar_Click" OnClientClick="restaurarClaseInput();"></asp:Button>
 
                         </div>
 
@@ -118,10 +118,38 @@
             inputFile.style.display = "inline-grid";
         }
 
-        function deshabilitarInputFile() {
-            document.getElementById("imgFile").disabled = false;
+        function cambiarClaseInput() {
+          
+            var inputElement = document.getElementById("imgFile");
+
+            inputElement.classList.remove("inputfiledos");
+            //remover la case que se utiliza actualmente 
+            inputElement.classList.add("inputfile");
+            //asignar  la clase que se va utilizar
+
+            localStorage.setItem("estiloInput", "inputfile");
+            
         }
-    
+
+        function restaurarClaseInput() {
+            var inputElement = document.getElementById("imgFile");
+            inputElement.classList.remove("inputfile");
+            inputElement.classList.add("inputfiledos");
+
+            // Borrar el estado del estilo en localStorage
+            localStorage.removeItem("estiloInput");
+        }
+        window.onload = function () {
+            // Recuperar el estado del estilo del localStorage cuando se carga la página
+            var estiloGuardado = localStorage.getItem("estiloInput");
+            if (estiloGuardado) {
+                var inputElement = document.getElementById("imgFile");
+                inputElement.classList.remove("inputfiledos");
+                inputElement.classList.add(estiloGuardado);
+            }
+        };
+
+
     </script>
 
 </asp:Content>

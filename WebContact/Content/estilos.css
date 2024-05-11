@@ -57,7 +57,7 @@ html, body {
     color: white;
     background-color: #2196f3;
     text-align: center;
-    display: inline-grid; /**/
+    display: inline-grid;
     padding: 10px;
     border-radius: 10px;
     border: none;
@@ -181,3 +181,12 @@ html, body {
         background-color: #5f5f5c;
         cursor: pointer;
     }
+
+.inputfiledos {
+    
+    display: none;
+    
+}
+.labeldos {
+    display: none;
+}
