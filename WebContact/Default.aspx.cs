@@ -78,9 +78,11 @@ namespace WebContact
         {
 
             opcion = "E";
+            Response.Cookies["Opcion"].Value = opcion;
             if (string.IsNullOrEmpty(TextBoxName.Text))
             {
-                pictureEdit.OnClientClick = "notificar('info')";
+                //pictureEdit.OnClientClick = "notificar('info')";
+                ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('No hay ningún registro para editar');", true);
             }
             else
             {
@@ -93,6 +95,7 @@ namespace WebContact
                 txtboxPhone.ReadOnly = false;
                 txtboxOfficePhone.ReadOnly = false;
                 txtboxPost.ReadOnly = false;
+                
                 ///hay que pensar como hacer que cuando se de clic se muestre el input file 
                 btnGuardar.Visible = true;
                 btnCancelar.Visible = true;
@@ -109,6 +112,7 @@ namespace WebContact
         
         protected void btnGuardar_Click(object sender, EventArgs e)
         {
+            opcion = Request.Cookies["Opcion"]?.Value ?? "";
             string id = txtboxId.Text;
             string name = TextBoxName.Text;
             string phone = txtboxPhone.Text;
@@ -117,7 +121,7 @@ namespace WebContact
             HttpPostedFile archivoImagen = Request.Files["imgFile"];
             data insert = new data();
             HttpPostedFileBase archivoBase = new HttpPostedFileWrapper(archivoImagen);
-            TimeSpan interval = new TimeSpan(0, 0, 5);
+            //TimeSpan interval = new TimeSpan(0, 0, 5);
 
             if (opcion.Equals("A"))
             {
@@ -126,15 +130,18 @@ namespace WebContact
 
                 if (string.IsNullOrEmpty(TextBoxName.Text))
                 {
-                    btnGuardar.OnClientClick = "notificar('alert')";
+                    //btnGuardar.OnClientClick = "notificar('alert')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El campo nombre no puede estar vacio');", true);
                 }
                 else if (string.IsNullOrEmpty(txtboxPhone.Text))
                 {
-                    btnGuardar.OnClientClick = "notificar('obligMov')";
+                    //btnGuardar.OnClientClick = "notificar('obligMov')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El campo movil no puede estar vacio');", true);
                 }
                 else if (string.IsNullOrEmpty(txtboxId.Text))
                 {
-                    btnGuardar.OnClientClick = "notificar('obligId')";
+                    //btnGuardar.OnClientClick = "notificar('obligId')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El campo número de identificación no puede estar vacio');", true);
                 }
                 else if (id != insert.exist)
                 {
@@ -155,6 +162,7 @@ namespace WebContact
                     txtboxId.ReadOnly = true;
                     txtboxOfficePhone.ReadOnly = true;
                     txtboxPost.ReadOnly = true;
+                    
                     if (insert.base64String != null)
                     {
                         imagen.Src = "data:image/jpeg;base64," + insert.base64String;
@@ -171,18 +179,21 @@ namespace WebContact
             {
                 if (string.IsNullOrEmpty(TextBoxName.Text))
                 {
-                    btnGuardar.OnClientClick = "notificar('obligNom')";
+                    //btnGuardar.OnClientClick = "notificar('obligNom')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El campo nombre no puede estar vacio');", true);
+
                 }
                 else if (string.IsNullOrEmpty(txtboxPhone.Text))
                 {
-                    btnGuardar.OnClientClick = "notificar('obligMov')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El campo movil no puede estar vacio');", true);
                 }
                 else
                 {
                     insert.setUpdate(id, name, phone, post, phone_emp);
-                    insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
-                    if (insert.base64String != null)
+                    
+                    if (archivoImagen != null && archivoImagen.ContentLength > 0)
                     {
+                        insert.setImageUpdate(id, ConvertirImagenABytes(archivoBase));
                         imagen.Src = "data:image/jpeg;base64," + insert.base64String;
                     }
                     else
@@ -190,12 +201,37 @@ namespace WebContact
                         imagen.Src = "Buttons/atencion.png";
                     }
 
-                    btnGuardar.OnClientClick = "notificar('success')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El Contacto Fue Actualizado');", true);
+                }
+
+                //ocultar botones guardar y mostrar el resto
+
+                btnCancelar.Visible = false;
+                btnGuardar.Visible = false;
+                dropdownNombres.Visible = true;
+                dropdownNombres.SelectedValue = null;
+                pictureEdit.Visible = true;
+                pictureDelete.Visible = true;
+                agregar.Visible = true;
+                TextBoxName.ReadOnly = true;
+                txtboxPhone.ReadOnly = true;
+                txtboxId.ReadOnly = true;
+                txtboxOfficePhone.ReadOnly = true;
+                txtboxPost.ReadOnly = true;
+                insert.getSelected(id);
+                LlenarDropDownList();
+                if (insert.base64String != null)
+                {
+                    imagen.Src = "data:image/jpeg;base64," + insert.base64String;
+                }
+                else
+                {
+                    imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
                 }
 
             }
 
-            Thread.Sleep(interval);
+            //Thread.Sleep(interval);
         }
 
 
@@ -308,7 +344,7 @@ namespace WebContact
                 }
                 else
                 {
-                    imagen.Src = "Buttons/edit.png";///hay que cambiar esta imagen
+                    imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
                 }
             }
         }
@@ -344,7 +380,7 @@ namespace WebContact
             txtboxOfficePhone.ReadOnly = false;
             txtboxPost.ReadOnly = false;
             imagen.Src = "Buttons/atencion.png";///imagen por defecto
-                                                ///hay que pensar como hacer que cuando se de clic se muestre el input file 
+              ///hay que pensar como hacer que cuando se de clic se muestre el input file 
             btnGuardar.Visible = true;
             btnCancelar.Visible = true;
             ///se dejan los valores vacios en dado caso  que vengan llenos

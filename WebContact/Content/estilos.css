@@ -57,7 +57,7 @@ html, body {
     color: white;
     background-color: #2196f3;
     text-align: center;
-    display: inline-grid;
+    display: inline-grid; /**/
     padding: 10px;
     border-radius: 10px;
     border: none;
@@ -98,6 +98,10 @@ html, body {
         transform: scale(1.1);
         transition: 1s ease-in-out;
     }
+.ImageButton {
+    margin: 0 5px;
+    display: inline-grid;
+}
 
 .ImageButton:hover {
     transform: scale(1.1);
@@ -139,3 +143,41 @@ html, body {
     opacity :0.7;
     cursor:pointer;
 }
+
+.guardar {
+    font-size: 10px;
+    color: white;
+    background-color: #059638;
+    text-align: center;
+    width: 60px;
+    height: 35px;
+    border-radius: 10px;
+    border: none;
+    float: right;
+    margin: 0 10px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    .guardar:hover {
+        background-color: #045C24;
+        cursor: pointer;
+    }
+
+.cancelar {
+    font-size: 10px;
+    color: white;
+    background-color: #8e8e8b;
+    text-align: center;
+    width: 60px;
+    height: 35px;
+    border-radius: 10px;
+    border: none;
+    margin: 0 10px;
+    float: right;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+    .cancelar:hover {
+        background-color: #5f5f5c;
+        cursor: pointer;
+    }
