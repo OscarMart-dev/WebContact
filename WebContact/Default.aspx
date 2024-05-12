@@ -40,7 +40,7 @@
 
                                 <legend>Móvil</legend>
 
-                                <asp:TextBox ID="txtboxPhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
+                                <asp:TextBox ID="txtboxPhone" runat="server" pattern="[0-9]*" CssClass="TextBox" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
 
                             </fieldset>
 
@@ -48,7 +48,7 @@
 
                                 <legend>N° Identificación</legend>
 
-                                <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox" ReadOnly="True"></asp:TextBox>
+                                <asp:TextBox ID="txtboxId" runat="server" pattern="[0-9]*" CssClass="TextBox" ClientIDMode="Static" ReadOnly="True"></asp:TextBox>
 
                             </fieldset>
 
@@ -68,7 +68,7 @@
                             </fieldset>
 
                             <asp:ImageButton runat="server" ViewStateMode="Enabled" ID="agregar" Width="50px" ImageAlign="Right" Height="50px" ImageUrl="~/Buttons/agregar.png" class="ImageButton" float="right;" OnClick="agregar_Click" OnClientClick="cambiarClaseInput();"></asp:ImageButton>
-                            <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" class="guardar" OnClick="btnGuardar_Click"></asp:Button>
+                            <asp:Button runat="server" Text="Guardar" Visible="False" ID="btnGuardar" class="guardar" OnClick="btnGuardar_Click" OnClientClick="restaurarClaseSiCamposLlenos();"></asp:Button>
                             <div></div>
                             <asp:Button runat="server" Text="Cancelar" Visible="False" ID="btnCancelar" class="cancelar" OnClick="btnCancelar_Click" OnClientClick="restaurarClaseInput();"></asp:Button>
 
@@ -110,13 +110,6 @@
             return confirm('No se selecciono un contacto a eliminar');
         }
 
-        function mostrarInputFile() {
-            // Obtiene el elemento inputFile
-            var inputFile = document.getElementById("file");
-
-            // Cambia el estilo display a "inline-grid"
-            inputFile.style.display = "inline-grid";
-        }
 
         function cambiarClaseInput() {
           
@@ -132,8 +125,11 @@
         }
 
         function restaurarClaseInput() {
+            //se toma el input por el id//
             var inputElement = document.getElementById("imgFile");
+            //se define que hay que eliminar inputfile de la clase//
             inputElement.classList.remove("inputfile");
+            //se define la nueva clase dentro del input//
             inputElement.classList.add("inputfiledos");
 
             // Borrar el estado del estilo en localStorage
@@ -148,6 +144,17 @@
                 inputElement.classList.add(estiloGuardado);
             }
         };
+
+        function restaurarClaseSiCamposLlenos() {
+            var textBoxNameValue = document.getElementById('<%= TextBoxName.ClientID %>').value;
+            var txtboxPhoneValue = document.getElementById('<%= txtboxPhone.ClientID %>').value;
+            var txtboxIdValue = document.getElementById('<%= txtboxId.ClientID %>').value;
+
+            if (textBoxNameValue !== "" && txtboxPhoneValue !== "" && txtboxIdValue !== "") {
+                restaurarClaseInput();
+            }
+            return true; // Permite que el evento del botón continúe solo para el boton guardar
+        }
 
 
     </script>

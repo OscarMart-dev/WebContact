@@ -79,7 +79,7 @@ namespace WebContact
 
             opcion = "E";
             Response.Cookies["Opcion"].Value = opcion;
-            if (string.IsNullOrEmpty(TextBoxName.Text))
+            if (string.IsNullOrEmpty(txtboxId.Text))
             {
                 //pictureEdit.OnClientClick = "notificar('info')";
                 ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('No hay ningún registro para editar');", true);
@@ -172,7 +172,8 @@ namespace WebContact
                         imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
                     }
                     // btnGuardar.OnClientClick = "confirmation()";
-                    btnGuardar.OnClientClick = "notificar('success')";
+                    //btnGuardar.OnClientClick = "notificar('success')";
+                    ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El Contacto ha sido agregado');", true);
                 }
             }
             else
@@ -202,32 +203,34 @@ namespace WebContact
                     }
 
                     ClientScript.RegisterStartupScript(this.GetType(), "alert", "alert('El Contacto Fue Actualizado');", true);
+
+                    btnCancelar.Visible = false;
+                    btnGuardar.Visible = false;
+                    dropdownNombres.Visible = true;
+                    dropdownNombres.SelectedValue = null;
+                    pictureEdit.Visible = true;
+                    pictureDelete.Visible = true;
+                    agregar.Visible = true;
+                    TextBoxName.ReadOnly = true;
+                    txtboxPhone.ReadOnly = true;
+                    txtboxId.ReadOnly = true;
+                    txtboxOfficePhone.ReadOnly = true;
+                    txtboxPost.ReadOnly = true;
+                    insert.getSelected(id);
+                    LlenarDropDownList();
+                    if (insert.base64String != null)
+                    {
+                        imagen.Src = "data:image/jpeg;base64," + insert.base64String;
+                    }
+                    else
+                    {
+                        imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
+                    }
+
                 }
 
                 //ocultar botones guardar y mostrar el resto
 
-                btnCancelar.Visible = false;
-                btnGuardar.Visible = false;
-                dropdownNombres.Visible = true;
-                dropdownNombres.SelectedValue = null;
-                pictureEdit.Visible = true;
-                pictureDelete.Visible = true;
-                agregar.Visible = true;
-                TextBoxName.ReadOnly = true;
-                txtboxPhone.ReadOnly = true;
-                txtboxId.ReadOnly = true;
-                txtboxOfficePhone.ReadOnly = true;
-                txtboxPost.ReadOnly = true;
-                insert.getSelected(id);
-                LlenarDropDownList();
-                if (insert.base64String != null)
-                {
-                    imagen.Src = "data:image/jpeg;base64," + insert.base64String;
-                }
-                else
-                {
-                    imagen.Src = "Buttons/atencion.png";///hay que cambiar esta imagen
-                }
 
             }
 
@@ -438,9 +441,15 @@ namespace WebContact
 
             }
             else
-            {
+            {//se debe tener en cuenta que al cancelar si no se retorna los valores anteriores va a quedar en blanco , se revierte los cambios//
+                string id = txtboxId.Text;
                 data retorna = new data();
-                retorna.getSelected(txtboxId.Text);
+                retorna.getSelected(id);
+                TextBoxName.Text = retorna.name;
+                txtboxId.Text = retorna.id;
+                txtboxPhone.Text = retorna.phone;
+                txtboxPost.Text = retorna.post;
+                txtboxOfficePhone.Text = retorna.office_phone;
                 if (retorna.base64String != null)
                 {
                     imagen.Src = "data:image/jpeg;base64," + retorna.base64String;

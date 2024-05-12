@@ -136,6 +136,7 @@
     <Content Include="Default.aspx" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
+    <Content Include="Informacion.aspx" />
     <Content Include="information.aspx" />
     <Content Include="Notification\index.var.js" />
     <Content Include="Notification\notifica.js" />
@@ -228,6 +229,13 @@
     </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Informacion.aspx.cs">
+      <DependentUpon>Informacion.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Informacion.aspx.designer.cs">
+      <DependentUpon>Informacion.aspx</DependentUpon>
     </Compile>
     <Compile Include="information.aspx.cs">
       <DependentUpon>information.aspx</DependentUpon>

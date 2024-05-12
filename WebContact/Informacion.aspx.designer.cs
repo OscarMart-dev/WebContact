@@ -11,7 +11,7 @@ namespace WebContact
 {
 
 
-    public partial class information
+    public partial class Informacion
     {
 
         /// <summary>
@@ -22,14 +22,5 @@ namespace WebContact
         /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-
-        /// <summary>
-        /// Control GridView.
-        /// </summary>
-        /// <remarks>
-        /// Campo generado automáticamente.
-        /// Para modificarlo, mueva la declaración del campo del archivo del diseñador al archivo de código subyacente.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.GridView GridView;
     }
 }
